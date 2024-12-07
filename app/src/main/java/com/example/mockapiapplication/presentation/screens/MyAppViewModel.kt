@@ -80,14 +80,14 @@ class MyAppViewModel @Inject constructor(
     fun saveUsername(username: String) {
         viewModelScope.launch {
             appDao.saveUsername(AppEntity(username = username))
-            _usernameState.value = username  // Ensure this line is present
+            _usernameState.value = username
         }
     }
 
     fun fetchUsername() {
         viewModelScope.launch {
             val savedUsername = appDao.getUsername()
-            _usernameState.value = savedUsername  // Ensure this line is setting the value
+            _usernameState.value = savedUsername
         }
     }
 }

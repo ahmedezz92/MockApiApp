@@ -25,10 +25,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mockapiapplication.R
-import com.example.mockapiapplication.presentation.screens.MyAppViewModel
 
 @Composable
 fun LoginScreen(
@@ -38,69 +38,77 @@ fun LoginScreen(
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    Box(
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
+            .background(Color.White, shape = RoundedCornerShape(16.dp))
+            .padding(24.dp)
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+        Text(
+            text = "Welcome",
+            style = MaterialTheme.typography.bodyLarge,
+            color = Color.Blue.copy(alpha = 0.7f),
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+        OutlinedTextField(
+            value = username,
+            onValueChange = { username = it },
+            label = {
+                Text(
+                    stringResource(id = R.string.label_username),
+                    textAlign = TextAlign.Center
+                )
+            },
+            singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White, shape = RoundedCornerShape(16.dp))
-                .padding(24.dp)
+                .align(Alignment.CenterHorizontally),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color.Blue.copy(alpha = 0.7f),
+                unfocusedBorderColor = Color.Gray
+            )
+        )
+
+        OutlinedTextField(
+            value = password,
+            onValueChange = { password = it },
+            label = {
+                Text(
+                    stringResource(id = R.string.label_password),
+                )
+            },
+            singleLine = true,
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth(),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color.Blue.copy(alpha = 0.7f),
+                unfocusedBorderColor = Color.Gray
+            )
+        )
+
+        Button(
+            onClick = {
+                viewModel.saveUsername(username)
+                onLoginSuccess()
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            colors = ButtonDefaults.buttonColors(
+                Color.Blue.copy(alpha = 0.7f)
+            ),
         ) {
             Text(
-                text = "Welcome",
-                style = MaterialTheme.typography.bodyLarge,
-                color = Color.Blue.copy(alpha = 0.7f),
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-            OutlinedTextField(
-                value = username,
-                onValueChange = { username = it },
-                label = { Text(stringResource(id = R.string.label_username)) },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.Blue.copy(alpha = 0.7f),
-                    unfocusedBorderColor = Color.Gray
-                )
-            )
-
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text(stringResource(id = R.string.label_password)) },
-                singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color.Blue.copy(alpha = 0.7f),
-                    unfocusedBorderColor = Color.Gray
-                )
-            )
-
-            Button(
-                onClick = {
-                    viewModel.saveUsername(username)
-                    onLoginSuccess()
-                },
+                stringResource(id = R.string.label_Login),
+                color = Color.White,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp),
-                colors = ButtonDefaults.buttonColors(
-                    Color.Blue.copy(alpha = 0.7f)
-                )
-            ) {
-                Text(
-                    stringResource(id = R.string.label_Login),
-                    color = Color.White,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
+                    .padding(10.dp)
+            )
         }
     }
 }
